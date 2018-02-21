@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html ng-app>
+<head>
+    <title>Add / List Marks (AngularJS)</title>
+    <style>
+	    .list_data { margin-bottom: 2rem }
+	    table, th, td { border: 1px solid #AAA }
+	    th { cursor: pointer }
+    </style>
+</head>
+  
+<body ng-controller="RecordCtrl">
+    <div class="list_data">
+        <h1>Mark Data</h1>
+        <table>
+            <tr>
+                <th ng-click="type = 'include'; reverse = !reverse">Status</th>
+                <th ng-click="type = 'subject'; reverse = !reverse">Subject</th>
+                <th ng-click="type = 'test1'; reverse = !reverse">Test1 mark</th>
+                <th ng-click="type = 'test2'; reverse = !reverse">Test2 mark</th>
+                <th>Action</th>
+            </tr>
+            <tr ng-repeat="record in records | orderBy:type:reverse">
+                <td><input type="checkbox" ng-model="record.include"></td>
+                <td>{{record.subject | uppercase}}</td>
+                <td>{{record.test1 | number}}</td>
+                <td>{{record.test2 | number}}</td>
+                <td><button ng-click="Delete($index)">Delete</button></td>
+            </tr>
+            <tr>
+                <td colspan="2">Total</td>
+                <td>{{Totals().test1 | number}}</td>
+                <td>{{Totals().test2 | number}}</td>
+                <td>&nbsp;</td>
+            </tr>
+        </table>
+        <button ng-show="history.length > 0" ng-click="Undo()">Undo Delete</button>
+    </div>
+  
+    <div class="add_data">
+        <h1>Add Data</h1>
+        <form ng-submit="Add()">
+            <div class="field">
+                <label for="subject">Subject: </label>
+                <input id="subject" type="text" placeholder="Subject" maxlength="2" ng-model="newSub">
+            </div>
+            <div class="field">
+                <label for="test1">test1: </label>
+                <input id="test1" type="number" placeholder="Test1 mark" min="0" ng-model="newt1">
+            </div>
+            <div class="field">
+                <label for="test2">Test2: </label>
+                <input id="test2" type="number" placeholder="Test2 mark" min="0" ng-model="newt2">
+            </div>
+            <div class="action">
+                <button type="submit">Add</button>
+                <button ng-click="Reset()">Reset</button>
+            </div>
+        </form>
+    </div>
+
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.11/angular.min.js"></script>
+	<script>
+	function RecordCtrl ($scope) {
+        // Historical data
+        $scope.history = [];
+
+        // Default data (can be loaded from a database)
+		$scope.records = [
+			{ subject: 'CS', test1: 72, test2: 50, include: false },
+			{ subject: 'MA', test1: 62, test2: 80, include: false }
+		];
+
+        // Total prices
+		$scope.Totals = function () {
+			var test1Total = 0;
+            var test2Total = 0;
+
+            
+			angular.forEach($scope.records, function (record) {
+		        if (record.include) {
+					test1Total += record.test1;
+		            test2Total += record.test2;
+		        }
+			});
+
+            return { test1: test1Total , test2: test2Total };
+		};
+
+        $scope.Delete = function (index) {
+      
+            if ($scope.history.length === 10)
+                $scope.history.shift();
+           
+            $scope.history.push($scope.records[index]);
+
+           
+            $scope.records.splice(index, 1);
+        };
+
+       
+        $scope.Reset = function () {
+            $scope.newSub = '';
+            $scope.newt1 = 0;
+            $scope.newt2 = 0;
+        }
+        $scope.Reset();
+
+       
+        $scope.Add = function () {
+          
+            if (!$scope.newSub)
+                return;
+
+            
+            $scope.records.push({
+                subject: $scope.newSub,
+                test1: $scope.newt1,
+                test2: $scope.newt2,
+                include: false
+            });
+
+           
+            $scope.Reset();
+        }
+
+       
+        $scope.Undo = function () {
+           
+            $scope.records.push($scope.history[ $scope.history.length - 1 ]);
+
+            $scope.history.pop();
+        }
+	}
+	</script>
+</body>
+</html>

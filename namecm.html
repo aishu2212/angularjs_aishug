@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+</head>
+<script src="C:/Users/Welcome/Downloads/angular.min.js"></script>
+<body>
+
+    <script type="text/javascript">
+        var app = angular.module('MyApp', [])
+        app.controller('MyController', function ($scope,$window) {
+            $scope.ShowAlert = function () {
+                if (typeof ($scope.name) == "undefined" || $scope.name == "") {
+                    $window.alert("Please enter your name!");
+                    return;
+                }
+$scope.fullname="Hello " + $scope.name + $scope.name1;
+//$window.alert($scope.fullname);
+
+                //$window.alert("Hello " + $scope.name + $scope.name1);
+            }
+        });
+    </script>
+    <div ng-app="MyApp" ng-controller="MyController">
+        Name:
+        <input type="text" ng-model="name" />
+ <input type="text" ng-model="name1" />
+{{fullname}}
+        <br />
+        <br />
+        <input type="button" value="Show Alert" ng-click="ShowAlert()" />
+    </div>
+</body>
+</html>
+ 
+

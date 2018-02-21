@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html ng-app="myApp">
+
+<head>
+  <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.2.14/angular.min.js"></script>
+  <meta charset="utf-8">
+  <title>JS Bin</title>
+  <style>
+    .red {
+      color: blue;
+      font-size: 20px;
+    }
+    .green {
+      color: green;
+      font-size: 26px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div ng-controller="GrandParentController">
+    GrandParent :
+    <span ng-bind="grandNameContainer" class="red"></span>
+    <div ng-controller="ParentController">
+      <input ng-model="studentName" placeholder="Enter Name">
+      <button ng-click="emitMyName(studentName)">
+        Emit
+      </button>
+      <button ng-click="broadcastMyName(studentName)">
+        Broadcast
+      </button>
+
+      <div ng-controller="ChildController">
+        Child :
+        <span ng-bind="childNameContainer" class="green">
+           </span>
+      </div>
+    </div>
+  </div>
+  <script>
+    var myApp = angular.module('myApp', []);
+
+    myApp.controller("ParentController",
+      function($scope) {
+
+        $scope.emitMyName = function(studentName) {
+          $scope.$emit("namePublished", {
+            "studentName": studentName
+          });
+        };
+        $scope.broadcastMyName = function(studentName) {
+          $scope.$broadcast("namePublished", {
+            "studentName": studentName
+          });
+        };
+
+      });
+
+    myApp.controller("ChildController",
+      function($scope) {
+
+        $scope.$on('namePublished', function(event, args) {
+          console.log(args);
+          $scope.childNameContainer = args.studentName;
+        });
+
+      });
+
+    myApp.controller("GrandParentController",
+      function($scope) {
+
+        $scope.$on('namePublished', function(event, args) {
+          console.log(args);
+          $scope.grandNameContainer = args.studentName;
+        });
+      });
+  </script>
+</body>
+
+</html>

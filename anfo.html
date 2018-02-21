@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="C:/Users/Welcome/Downloads/angular.min.js"></script>
+</head>
+<div ng-app="StudentApp" ng-controller="studentController"> 
+    <h1>Student Information:</h1>
+
+            <label for="firstName" >First Name: </label><br />
+            <input type="text" id="firstName" ng-model="student.firstName" /> <br />
+
+            <label for="lastName">Last Name</label><br />
+               <input type="text" id="lastName" ng-model="student.lastName" /> <br />
+           <label for="dob" >DoB</label><br />
+                <input type="date" id="dob" ng-model="student.DoB" /> <br /><br />
+            <label for="gender" >Gender</label> <br />
+                <select id="gender" ng-model="student.gender">
+                    <option value="male">Male</option>
+                   <option value="female">Female</option>
+                </select><br /> <br />
+               <span>Training Type:</span><br />
+                  <label><input value="online" type="radio" name="training" ng-model="student.trainingType" />Online</label><br />
+                   <label><input value="onsite" type="radio" name="training" ng-model="student.trainingType" />OnSite</label> <br /><br />
+                <span>Subjects</span><br />
+                    <label><input type="checkbox" ng-model="student.maths" />Maths</label> <br />
+                   <label><input type="checkbox" ng-model="student.physics" />Physics</label> <br />
+                  <label><input type="checkbox"  ng-model="student.chemistry" />Chemistry</label><br /><br /> 
+      
+        <input type="submit" value="submit" ng-submit='submitStudnetForm()' /> 
+
+  </div>
+  <script>
+  var studentApp = angular.module('studentApp', []);
+  studentApp.controller('studentController', function($scope){
+            $scope.student = {
+              firstName:"",
+                lastName:"",
+                DoB:"",
+                gender:"",
+                maths:"",
+                physics:"",
+                chemistry:""
+            }
+
+$scope.submitStudnetForm=function(){
+var x= $scope.student;
+return x.firstName+x.lastName+x.DoB+x.gender+x.maths+x.physics+x.chemistry;
+
+            };
+    });
+{{submitStudnetForm}}
+    </script>    
+</body>
+</html>

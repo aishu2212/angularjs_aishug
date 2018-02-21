@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<script src="C:/Users/Welcome/Downloads/angular.min.js"></script>
+<body>
+
+<div ng-app="myApp" ng-controller="myCtrl">
+<p>first Name : <input type="text" ng-model="profile.name" ng-bind="name"></p>
+  <p>last Name : <input type="text" ng-model="profile.name1" ng-bind="name"></p>
+{{fullname()}}
+<script type="text/javascript" >
+var app= angular.module('myApp',[]);
+app.controller('myCtrl',function($scope){
+$scope.profile={
+name : "",
+name1 : ""
+}
+$scope.fullname=function()
+{
+var x= $scope.profile;
+return x.name + x.name1;
+};
+});
+</script>
+  
+</div>
+
+</body>
+</html>

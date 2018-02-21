@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link  rel="stylesheet" href="css/bootstrap.min.css" />
+        <link  rel="stylesheet" href="css/custom.css" />
+    </head>
+    <body ng-app="app">
+        <div class="container" ng-controller="AccountController as vm">
+            <div class="header clearfix">
+                <nav>
+                    <ul class="nav nav-pills pull-right">
+                        <li role="presentation">
+                            <span>Current Balance: {{ vm.accountBalance | currency }}</span>
+                        </li>
+                    </ul>
+                </nav>
+                <h3 class="text-muted">Account Controller</h3>
+                <h5>dispatches event <b>WithdrawalNotAllowed</b> downwards to Child Controllers using <b>$broadcast</b></h5>
+            </div>
+            <div class="row">
+                <div class="col-lg-6" ng-controller="DepositController as vm">
+                    <h3>Deposit Controller</h3>
+                    <h5>dispatches event <b>AmountDeposited</b> upwards to AccountController using <b>$emit</b></h5>
+                    <p>
+                        <input type="text" class="form-control" ng-model="vm.amount" />
+                    </p>
+                    <p>
+                        <input type="button" class="btn btn-primary btn-sm" value="Deposit" ng-click="vm.deposit()" />
+                    </p>
+                </div>
+                <div class="col-lg-6" ng-controller="WithdrawController as vm">
+                    <h3>Withdraw Controller</h3>
+                    <h5>dispatches event <b>AmountWithdrawn</b> upwards to AccountController using <b>$emit</b></h5>
+                    <p>
+                        <input type="text"  class="form-control" ng-model="vm.amount" />
+                        <span class="error" ng-if="vm.validationError">{{vm.validationError}}</span>
+                    </p>
+                    <p>
+                        <input type="button" class="btn btn-primary btn-sm" value="Withdraw" ng-click="vm.withdraw()" />
+                    </p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://js/jquery.min.js"></script>
+        <script type="text/javascript" src="http://js/bootstrap.min.js"></script>
+        <script type="text/javascript" src="http://js/angular.min.js"></script>
+        <script type="text/javascript" src="http://js/custom.js"></script>
+        <script type="text/javascript" src="http://app/app.js"></script>
+    </body>
+</html>
