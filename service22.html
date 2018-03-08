@@ -1,0 +1,106 @@
+<html>
+<head>
+<title>SERVICE</title>
+<script src="C:/Users/Welcome/Downloads/angular.min.js"></script>
+<script>
+angular.module('aishu',[]).service('ais',function(){
+    this.validate=function(x,y){
+	  if(x == "admin" && y == "admin"){ return true; } else { return false; }
+	};
+}).controller('One',function($scope,$rootScope, ais){
+  $scope.login=function(){
+    var check=ais.validate($scope.Usname,$scope.password);
+	alert(check);
+	}
+}).controller('Two',function($scope,$rootScope, ais){
+$rootScope.home=function RecordCtrl ($rootScope) {
+        // Historical data
+        $scope.history = [];
+
+        // Default data (can be loaded from a database)
+		$scope.records = [
+			{ subject: 'CS', test1: 72, test2: 50, include: false },
+			{ subject: 'MA', test1: 62, test2: 80, include: false }
+		];
+
+        // Total prices
+		$scope.Totals = function () {
+			var test1Total = 0;
+            var test2Total = 0;
+
+            
+			angular.forEach($scope.records, function (record) {
+		        if (record.include) {
+					test1Total += record.test1;
+		            test2Total += record.test2;
+		        }
+			});
+
+            return { test1: test1Total , test2: test2Total };
+		};
+
+        $scope.Delete = function (index) {
+      
+            if ($scope.history.length === 10)
+                $scope.history.shift();
+           
+            $scope.history.push($scope.records[index]);
+
+           
+            $scope.records.splice(index, 1);
+        };
+
+       
+        $scope.Reset = function () {
+            $scope.newSub = '';
+            $scope.newt1 = 0;
+            $scope.newt2 = 0;
+        }
+        $scope.Reset();
+
+       
+        $scope.Add = function () {
+          
+            if (!$scope.newSub)
+                return;
+
+            
+            $scope.records.push({
+                subject: $scope.newSub,
+                test1: $scope.newt1,
+                test2: $scope.newt2,
+                include: false
+            });
+
+           
+            $scope.Reset();
+        }
+
+       
+        $scope.Undo = function () {
+           
+            $scope.records.push($scope.history[ $scope.history.length - 1 ]);
+
+            $scope.history.pop();
+        }
+	}
+}
+});
+	
+</script>
+<body ng-app="aishu">
+<div ng-controller="One" ng-show="login">
+Username:<input type="text" ng-model="Usname" ><br>
+Password:<input type="password" ng-model="password"><br>
+<!--<input type="submit" ng-click="login()">-->
+<button ng-click="login()">Login</button>
+<h1> Hey {{message}} , Welcome! </h1>
+  </div>
+<div ng-controller="Two" ng-show="home">
+       
+	
+           
+
+</div>
+</body>
+</html>
